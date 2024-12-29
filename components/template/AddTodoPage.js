@@ -5,10 +5,26 @@ import { BsAlignStart } from "react-icons/bs";
 import { FiSettings } from "react-icons/fi";
 import { AiOutlineFileSearch } from "react-icons/ai";
 import { MdDoneAll } from "react-icons/md";
+import { ToastContainer, toast } from "react-toastify";
 
 function AddTodoPage() {
   const [title, setTitle] = useState("");
   const [status, setStatus] = useState("todo");
+
+  const addHandler = async () => {
+    const res = await fetch("/api/todos", {
+      method: "POST",
+      body: JSON.stringify({ title, status }),
+      headers: { "Content-Type": "application/json" },
+    });
+    
+    const data = await res.json();
+    if (data.status === "success") {
+      setTitle("");
+      setStatus("todo");
+      toast.success("Todo added successfully");
+    }
+  };
 
   return (
     <div className="add-form">
@@ -36,8 +52,9 @@ function AddTodoPage() {
             <MdDoneAll />
           </RadioButton>
         </div>
-        <button>Add</button>
+        <button onClick={addHandler}>Add</button>
       </div>
+      <ToastContainer />
     </div>
   );
 }
