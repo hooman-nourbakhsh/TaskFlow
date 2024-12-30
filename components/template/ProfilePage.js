@@ -7,7 +7,15 @@ function ProfilePage() {
   const [lastName, setLastName] = useState("");
   const [password, setPassword] = useState("");
 
-  const submitHandler = () => {};
+  const submitHandler = async () => {
+    const res = await fetch("/api/profile", {
+      method: "POST",
+      body: JSON.stringify({ name, lastName, password }),
+      headers: { "Content-Type": "application/json" },
+    });
+    const data = await res.json();
+    console.log(data);
+  };
 
   return (
     <div className="profile-form">
